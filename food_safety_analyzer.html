@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>식단 안전 가이드</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg: #ffffff;
+      --color-bg-secondary: #f6f5f0;
+      --color-bg-tertiary: #f0ede6;
+      --color-text-primary: #1a1a18;
+      --color-text-secondary: #5f5e5a;
+      --color-text-tertiary: #888780;
+      --color-border: rgba(0,0,0,0.12);
+      --color-border-strong: rgba(0,0,0,0.22);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --green-light: #E1F5EE;
+      --green-mid: #1D9E75;
+      --green-dark: #085041;
+      --green-border: #5DCAA5;
+      --amber-light: #FAEEDA;
+      --amber-mid: #EF9F27;
+      --amber-dark: #633806;
+      --amber-border: #FAC775;
+      --red-light: #FCEBEB;
+      --red-mid: #E24B4A;
+      --red-dark: #791F1F;
+      --red-border: #F09595;
+      --blue-light: #E6F1FB;
+      --blue-mid: #378ADD;
+      --blue-dark: #0C447C;
+      --blue-border: #85B7EB;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #1e1e1c;
+        --color-bg-secondary: #2a2a28;
+        --color-bg-tertiary: #252523;
+        --color-text-primary: #f0ede6;
+        --color-text-secondary: #b4b2a9;
+        --color-text-tertiary: #888780;
+        --color-border: rgba(255,255,255,0.1);
+        --color-border-strong: rgba(255,255,255,0.2);
+        --green-light: #04342C;
+        --green-border: #0F6E56;
+        --amber-light: #412402;
+        --amber-border: #854F0B;
+        --red-light: #501313;
+        --red-border: #A32D2D;
+        --blue-light: #042C53;
+        --blue-border: #185FA5;
+        --green-dark: #9FE1CB;
+        --amber-dark: #FAC775;
+        --red-dark: #F7C1C1;
+        --blue-dark: #B5D4F4;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      background: var(--color-bg-tertiary);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .header {
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header h1 i {
+      color: var(--green-mid);
+      font-size: 22px;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.65;
+    }
+
+    /* Ethics banner */
+    .ethics-banner {
+      background: var(--color-bg-secondary);
+      border: 0.5px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .ethics-banner h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ethics-banner h3 i {
+      color: var(--green-mid);
+      font-size: 15px;
+    }
+
+    .ethics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ethics-item {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      display: flex;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .ethics-dot {
+      color: var(--green-mid);
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-weight: 700;
+    }
+
+    /* Card wrapper */
+    .card {
+      background: var(--color-bg);
+      border: 0.5px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Sections */
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-label i {
+      font-size: 14px;
+    }
+
+    /* Chips */
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 0.5px solid var(--color-border-strong);
+      font-size: 13px;
+      cursor: pointer;
+      background: var(--color-bg);
+      color: var(--color-text-secondary);
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .chip:hover {
+      border-color: var(--green-mid);
+      color: var(--green-mid);
+      background: var(--green-light);
+    }
+
+    .chip.active {
+      background: var(--green-mid);
+      color: #fff;
+      border-color: var(--green-mid);
+    }
+
+    .chip.active-none {
+      background: var(--color-bg-secondary);
+      border-color: var(--color-border);
+      color: var(--color-text-primary);
+    }
+
+    /* Textarea */
+    .food-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 0.5px solid var(--color-border-strong);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      resize: vertical;
+      min-height: 88px;
+      font-family: inherit;
+      color: var(--color-text-primary);
+      background: var(--color-bg);
+      line-height: 1.6;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .food-input:focus {
+      outline: none;
+      border-color: var(--green-mid);
+      box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.12);
+    }
+
+    .food-input::placeholder {
+      color: var(--color-text-tertiary);
+    }
+
+    /* Button */
+    .analyze-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--green-mid);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-lg);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 0.5rem;
+    }
+
+    .analyze-btn:hover { background: #0F6E56; }
+    .analyze-btn:active { transform: scale(0.99); }
+    .analyze-btn:disabled {
+      background: var(--color-bg-secondary);
+      color: var(--color-text-tertiary);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 2.5rem 0;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 2.5px solid var(--color-border);
+      border-top-color: var(--green-mid);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading p {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 0.5px solid var(--color-border);
+      margin: 1.5rem 0;
+    }
+
+    /* Result */
+    .overall-card {
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      border: 0.5px solid;
+    }
+
+    .overall-card.safe   { background: var(--green-light); border-color: var(--green-border); }
+    .overall-card.caution{ background: var(--amber-light); border-color: var(--amber-border); }
+    .overall-card.danger { background: var(--red-light);   border-color: var(--red-border);   }
+    .overall-card.info   { background: var(--blue-light);  border-color: var(--blue-border);  }
+
+    .overall-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .safe   .overall-label { color: #0F6E56; }
+    .caution .overall-label { color: #854F0B; }
+    .danger .overall-label  { color: #A32D2D; }
+    .info   .overall-label  { color: #185FA5; }
+
+    .overall-level {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .safe   .overall-level { color: var(--green-dark); }
+    .caution .overall-level { color: var(--amber-dark); }
+    .danger .overall-level  { color: var(--red-dark);  }
+    .info   .overall-level  { color: var(--blue-dark); }
+
+    .overall-summary {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .safe   .overall-summary { color: #0F6E56; }
+    .caution .overall-summary { color: #854F0B; }
+    .danger .overall-summary  { color: #A32D2D; }
+    .info   .overall-summary  { color: #185FA5; }
+
+    /* Item cards */
+    .items-grid { display: grid; gap: 12px; }
+
+    .item-card {
+      background: var(--color-bg);
+      border: 0.5px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+    }
+
+    .item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .food-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .risk-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    .risk-badge.safe    { background: #9FE1CB; color: #085041; }
+    .risk-badge.caution { background: #FAC775; color: #633806; }
+    .risk-badge.danger  { background: #F7C1C1; color: #791F1F; }
+    .risk-badge.info    { background: #B5D4F4; color: #0C447C; }
+
+    .item-row { margin-bottom: 8px; }
+    .item-row-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 3px; font-weight: 500; }
+    .item-row-text  { font-size: 13px; color: var(--color-text-primary); line-height: 1.55; }
+
+    .recommendation {
+      background: var(--color-bg-secondary);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      margin-top: 8px;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .recommendation i { flex-shrink: 0; margin-top: 1px; font-size: 13px; }
+
+    /* Disclaimer */
+    .disclaimer {
+      border-top: 0.5px solid var(--color-border);
+      padding-top: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .disclaimer-text {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      line-height: 1.65;
+      display: flex;
+      gap: 8px;
+    }
+
+    .disclaimer-text i { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+    /* Error */
+    .error-msg {
+      background: var(--red-light);
+      border: 0.5px solid var(--red-border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+      color: var(--red-dark);
+      font-size: 14px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .error-msg i { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      body { padding: 1.25rem 0.75rem 3rem; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+
+    <div class="header">
+      <h1>
+        <i class="ti ti-salad" aria-hidden="true"></i>
+        식단 안전 가이드
+      </h1>
+      <p>건강 상태와 복용 약물을 입력하면, AI가 식단의 안전성을 분석해드립니다.</p>
+    </div>
+
+    <!-- AI 윤리 배너 -->
+    <div class="ethics-banner" role="note" aria-label="AI 윤리 원칙">
+      <h3>
+        <i class="ti ti-shield-check" aria-hidden="true"></i>
+        AI 윤리 원칙
+      </h3>
+      <div class="ethics-list">
+        <div class="ethics-item">
+          <span class="ethics-dot" aria-hidden="true">·</span>
+          <span>이 서비스는 의료 진단이나 처방을 대체하지 않으며, 참고용 정보만 제공합니다.</span>
+        </div>
+        <div class="ethics-item">
+          <span class="ethics-dot" aria-hidden="true">·</span>
+          <span>AI 분석 결과에는 불확실성이 있을 수 있으며, 항상 전문가 의견을 우선합니다.</span>
+        </div>
+        <div class="ethics-item">
+          <span class="ethics-dot" aria-hidden="true">·</span>
+          <span>입력된 건강 정보는 분석에만 사용되며, 외부에 저장·전송되지 않습니다.</span>
+        </div>
+        <div class="ethics-item">
+          <span class="ethics-dot" aria-hidden="true">·</span>
+          <span>결과가 '안전'이더라도 개인 상황에 따라 다를 수 있으므로 의사·약사와 상담하세요.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 입력 폼 -->
+    <div class="card">
+
+      <!-- 질환 -->
+      <div style="margin-bottom: 1.25rem;">
+        <div class="section-label">
+          <i class="ti ti-heart-rate-monitor" aria-hidden="true"></i>
+          질환 선택
+        </div>
+        <div class="chip-group" id="conditions" role="group" aria-label="질환 선택">
+          <div class="chip active-none" data-val="없음" tabindex="0" role="checkbox" aria-checked="true">없음</div>
+          <div class="chip" data-val="고혈압" tabindex="0" role="checkbox" aria-checked="false">고혈압</div>
+          <div class="chip" data-val="당뇨" tabindex="0" role="checkbox" aria-checked="false">당뇨</div>
+          <div class="chip" data-val="신장질환" tabindex="0" role="checkbox" aria-checked="false">신장질환</div>
+          <div class="chip" data-val="통풍" tabindex="0" role="checkbox" aria-checked="false">통풍</div>
+        </div>
+      </div>
+
+      <!-- 복용 약물 -->
+      <div style="margin-bottom: 1.25rem;">
+        <div class="section-label">
+          <i class="ti ti-pill" aria-hidden="true"></i>
+          복용 약물 선택
+        </div>
+        <div class="chip-group" id="medications" role="group" aria-label="복용 약물 선택">
+          <div class="chip active-none" data-val="없음" tabindex="0" role="checkbox" aria-checked="true">없음</div>
+          <div class="chip" data-val="와파린" tabindex="0" role="checkbox" aria-checked="false">와파린</div>
+          <div class="chip" data-val="스타틴" tabindex="0" role="checkbox" aria-checked="false">스타틴</div>
+          <div class="chip" data-val="MAOI 항우울제" tabindex="0" role="checkbox" aria-checked="false">MAOI 항우울제</div>
+          <div class="chip" data-val="갑상선약" tabindex="0" role="checkbox" aria-checked="false">갑상선약</div>
+        </div>
+      </div>
+
+      <!-- 알레르기 -->
+      <div style="margin-bottom: 1.25rem;">
+        <div class="section-label">
+          <i class="ti ti-alert-triangle" aria-hidden="true"></i>
+          알레르기 선택
+        </div>
+        <div class="chip-group" id="allergies" role="group" aria-label="알레르기 선택">
+          <div class="chip active-none" data-val="없음" tabindex="0" role="checkbox" aria-checked="true">없음</div>
+          <div class="chip" data-val="땅콩" tabindex="0" role="checkbox" aria-checked="false">땅콩</div>
+          <div class="chip" data-val="우유" tabindex="0" role="checkbox" aria-checked="false">우유</div>
+          <div class="chip" data-val="계란" tabindex="0" role="checkbox" aria-checked="false">계란</div>
+          <div class="chip" data-val="새우" tabindex="0" role="checkbox" aria-checked="false">새우</div>
+        </div>
+      </div>
+
+      <!-- 식단 입력 -->
+      <div style="margin-bottom: 1rem;">
+        <div class="section-label">
+          <i class="ti ti-message" aria-hidden="true"></i>
+          오늘 먹은 음식 또는 먹으려는 음식을 입력하세요
+        </div>
+        <textarea
+          class="food-input"
+          id="foodInput"
+          placeholder="예: 오늘 라면이랑 땅콩버터 샌드위치 먹어도 돼?"
+          rows="3"
+          aria-label="식단 입력"
+        ></textarea>
+      </div>
+
+      <button class="analyze-btn" id="analyzeBtn" onclick="analyze()" aria-live="polite">
+        <i class="ti ti-search" aria-hidden="true" style="font-size:15px"></i>
+        식단 안전성 분석하기
+      </button>
+
+    </div><!-- /.card -->
+
+    <!-- 로딩 -->
+    <div id="loadingArea" style="display:none" role="status" aria-live="polite">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>AI가 식단을 분석하고 있습니다...</p>
+      </div>
+    </div>
+
+    <!-- 결과 -->
+    <div id="resultArea" style="display:none" aria-live="polite"></div>
+
+    <!-- 오류 -->
+    <div id="errorArea" style="display:none" role="alert"></div>
+
+  </main>
+
+  <script>
+    /* ── 상태 ── */
+    const state = {
+      conditions:  ["없음"],
+      medications: ["없음"],
+      allergies:   ["없음"]
+    };
+
+    /* ── 칩 초기화 ── */
+    function initChips(groupId, stateKey) {
+      const group = document.getElementById(groupId);
+      group.querySelectorAll('.chip').forEach(chip => {
+
+        /* 키보드 접근성 */
+        chip.addEventListener('keydown', e => {
+          if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); chip.click(); }
+        });
+
+        chip.addEventListener('click', () => {
+          const val = chip.dataset.val;
+          const noneChip = group.querySelector('[data-val="없음"]');
+
+          if (val === "없음") {
+            state[stateKey] = ["없음"];
+            group.querySelectorAll('.chip').forEach(c => {
+              c.classList.remove('active', 'active-none');
+              c.setAttribute('aria-checked', 'false');
+            });
+            noneChip.classList.add('active-none');
+            noneChip.setAttribute('aria-checked', 'true');
+          } else {
+            noneChip.classList.remove('active-none');
+            noneChip.setAttribute('aria-checked', 'false');
+            if (chip.classList.contains('active')) {
+              chip.classList.remove('active');
+              chip.setAttribute('aria-checked', 'false');
+              state[stateKey] = state[stateKey].filter(v => v !== val);
+              if (state[stateKey].length === 0) {
+                state[stateKey] = ["없음"];
+                noneChip.classList.add('active-none');
+                noneChip.setAttribute('aria-checked', 'true');
+              }
+            } else {
+              chip.classList.add('active');
+              chip.setAttribute('aria-checked', 'true');
+              state[stateKey] = state[stateKey].filter(v => v !== "없음");
+              state[stateKey].push(val);
+            }
+          }
+        });
+      });
+    }
+
+    initChips('conditions',  'conditions');
+    initChips('medications', 'medications');
+    initChips('allergies',   'allergies');
+
+    /* ── 위험도 헬퍼 ── */
+    function getRiskClass(level) {
+      if (!level) return 'info';
+      if (level.includes('안전')) return 'safe';
+      if (level.includes('주의')) return 'caution';
+      if (level.includes('위험')) return 'danger';
+      return 'info';
+    }
+
+    /* ── 결과 렌더링 ── */
+    function renderResult(data) {
+      const rc = getRiskClass(data.overallRiskLevel);
+
+      const itemsHtml = (data.items || []).map(item => {
+        const ic = getRiskClass(item.riskLevel);
+        return `
+          <div class="item-card">
+            <div class="item-header">
+              <span class="food-name">${escHtml(item.foodName || '')}</span>
+              <span class="risk-badge ${ic}">${escHtml(item.riskLevel || '정보 부족')}</span>
+            </div>
+            <div class="item-row">
+              <div class="item-row-label">판단 이유</div>
+              <div class="item-row-text">${escHtml(item.reason || '')}</div>
+            </div>
+            <div class="recommendation">
+              <i class="ti ti-bulb" aria-hidden="true"></i>
+              <span>${escHtml(item.recommendation || '')}</span>
+            </div>
+          </div>`;
+      }).join('');
+
+      document.getElementById('resultArea').innerHTML = `
+        <hr class="divider" />
+        <div class="overall-card ${rc}" role="region" aria-label="전체 판정">
+          <div class="overall-label">전체 판정</div>
+          <div class="overall-level">${escHtml(data.overallRiskLevel || '정보 부족')}</div>
+          <div class="overall-summary">${escHtml(data.summary || '')}</div>
+        </div>
+        <div class="items-grid">${itemsHtml}</div>
+        <div class="disclaimer">
+          <div class="disclaimer-text">
+            <i class="ti ti-info-circle" aria-hidden="true"></i>
+            <span>${escHtml(data.disclaimer || '이 서비스는 진단이나 처방을 제공하지 않으며, 정확한 판단은 의사 또는 약사와 상담해야 합니다.')}</span>
+          </div>
+        </div>`;
+
+      document.getElementById('resultArea').style.display = 'block';
+      document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ── XSS 방어 ── */
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    /* ── 분석 메인 함수 ── */
+    async function analyze() {
+      const foodInput = document.getElementById('foodInput').value.trim();
+      if (!foodInput) {
+        document.getElementById('foodInput').focus();
+        return;
+      }
+
+      const btn = document.getElementById('analyzeBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="ti ti-loader-2" aria-hidden="true" style="font-size:15px; animation:spin 0.8s linear infinite"></i> 분석 중...';
+
+      document.getElementById('loadingArea').style.display  = 'block';
+      document.getElementById('resultArea').style.display   = 'none';
+      document.getElementById('errorArea').style.display    = 'none';
+
+      /* 
+       * ── API 설정 ──────────────────────────────────────────────────
+       * 백엔드 연동 방법 (택1):
+       *
+       * [A] Anthropic API 직접 호출 (로컬 개발 / 테스트용)
+       *     아래 API_URL = "https://api.anthropic.com/v1/messages"
+       *     fetchOptions.headers["x-api-key"] = "your-api-key-here" 추가
+       *     (프로덕션에서는 절대 API 키를 클라이언트에 노출하지 마세요)
+       *
+       * [B] FastAPI 백엔드 연동 (권장)
+       *     API_URL = "http://localhost:8000/analyze"
+       *     body 형식을 백엔드 스펙에 맞게 변경
+       * ──────────────────────────────────────────────────────────────
+       */
+      const API_URL = "https://api.anthropic.com/v1/messages";
+
+      const prompt = `당신은 식단 안전성 분석 전문가입니다. 다음 사용자 정보를 바탕으로 식단의 안전성을 분석해주세요.
+
+사용자 건강 정보:
+- 질환: ${state.conditions.join(', ')}
+- 복용 약물: ${state.medications.join(', ')}
+- 알레르기: ${state.allergies.join(', ')}
+- 입력한 식단: ${foodInput}
+
+다음 JSON 형식으로만 응답하세요. 다른 텍스트, 마크다운 코드블록은 포함하지 마세요:
+{
+  "overallRiskLevel": "안전|주의|위험|정보 부족",
+  "summary": "전체 식단 요약",
+  "items": [
+    {
+      "foodName": "음식명",
+      "riskLevel": "안전|주의|위험|정보 부족",
+      "reason": "판단 이유",
+      "recommendation": "권장 행동"
+    }
+  ],
+  "disclaimer": "이 서비스는 진단이나 처방을 제공하지 않으며, 정확한 판단은 의사 또는 약사와 상담해야 합니다."
+}
+
+AI 윤리 지침 (반드시 준수):
+1. 의료 진단이나 처방을 절대 하지 마세요.
+2. 불확실한 경우 "정보 부족"으로 표시하고 전문가 상담을 권고하세요.
+3. 위험도를 과장하거나 축소하지 마세요. 객관적 근거에 기반하세요.
+4. disclaimer 필드에 항상 면책 문구를 포함하세요.
+5. 취약 계층(노인, 임산부, 어린이)에게 더 보수적인 기준을 적용하세요.`;
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+            /* [A] 직접 호출 시 아래 줄 주석 해제 후 API 키 입력:
+            "x-api-key": "sk-ant-...",
+            "anthropic-version": "2023-06-01"
+            */
+          },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 1000,
+            messages: [{ role: "user", content: prompt }]
+          })
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err?.error?.message || `HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+        const text = (data.content || []).map(b => b.text || '').join('');
+        const clean = text.replace(/```json|```/g, '').trim();
+        const parsed = JSON.parse(clean);
+        renderResult(parsed);
+
+      } catch (e) {
+        document.getElementById('errorArea').innerHTML = `
+          <div class="error-msg" role="alert">
+            <i class="ti ti-alert-circle" aria-hidden="true"></i>
+            <span>분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.<br>
+            <small style="opacity:0.7; font-size:11px">${escHtml(e.message)}</small></span>
+          </div>`;
+        document.getElementById('errorArea').style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="ti ti-search" aria-hidden="true" style="font-size:15px"></i> 식단 안전성 분석하기';
+        document.getElementById('loadingArea').style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
