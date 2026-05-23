@@ -703,7 +703,7 @@
        *     body 형식을 백엔드 스펙에 맞게 변경
        * ──────────────────────────────────────────────────────────────
        */
-      const API_URL = "https://api.anthropic.com/v1/messages";
+      const API_URL = "http://localhost:8000/analyze";
 
       const prompt = `당신은 식단 안전성 분석 전문가입니다. 다음 사용자 정보를 바탕으로 식단의 안전성을 분석해주세요.
 
@@ -735,7 +735,7 @@ AI 윤리 지침 (반드시 준수):
 4. disclaimer 필드에 항상 면책 문구를 포함하세요.
 5. 취약 계층(노인, 임산부, 어린이)에게 더 보수적인 기준을 적용하세요.`;
 
-      try {
+/*      try {
         const res = await fetch(API_URL, {
           method: "POST",
           headers: {
@@ -744,23 +744,40 @@ AI 윤리 지침 (반드시 준수):
             "x-api-key": "sk-ant-...",
             "anthropic-version": "2023-06-01"
             */
-          },
+/*          },
           body: JSON.stringify({
             model: "claude-sonnet-4-20250514",
             max_tokens: 1000,
             messages: [{ role: "user", content: prompt }]
           })
+        });*/
+
+      try {
+        const res = await fetch(API_URL, {
+         method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            conditions: state.conditions,
+            medications: state.medications,
+            allergies: state.allergies,
+            foodInput: foodInput
+          })
         });
+        
 
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
           throw new Error(err?.error?.message || `HTTP ${res.status}`);
         }
 
-        const data = await res.json();
+        /*const data = await res.json();
         const text = (data.content || []).map(b => b.text || '').join('');
         const clean = text.replace(/```json|```/g, '').trim();
         const parsed = JSON.parse(clean);
+        renderResult(parsed);*/
+        const parsed = await res.json();
         renderResult(parsed);
 
       } catch (e) {
